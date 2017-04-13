@@ -1,10 +1,5 @@
-import * as types from './types'
+import * as authActions from './auth'
 
-export const userLogin = (user) => {
-    console.log('Login for:', user.username)
-    // implement login here
-    return {
-        type: types.USER_LOGIN,
-        payload: user
-    }
-}
+export const ActionCreators = Object.assign({},
+  authActions,
+);

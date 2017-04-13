@@ -1,14 +1,18 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { View, Text, TextInput, Button } from 'react-native'
 import styles from '../styles/index'
 
+import { userLogin } from '../actions/auth'
+
 let user = {
-    name: '',
+    email: '',
     password: ''
 }
 
-function usernameListener(event) {
-    user.name = event.text
+function userEmailListener(event) {
+    user.email = event.text
 }
 
 function passwordListener(event) {
@@ -16,18 +20,18 @@ function passwordListener(event) {
 }
 
 function loginHandler() {
-    if(user.name!==''){
-        console.log('username:', user.name)
+    if(user.email!==''){
+        userLogin(user)
     }
 }
 
 const loginScreen = () => (
     <View>
-        <Text>Username:</Text>
+        <Text>Useremail:</Text>
         <TextInput 
             style={styles.inputBoxes}
             underlineColorAndroid='transparent'
-            onChangeText={(name) => {user = ({name})}}
+            onChangeText={(text) => userEmailListener({text})}
         />
         <TextInput 
             style={styles.inputBoxes}
@@ -40,4 +44,14 @@ const loginScreen = () => (
     </View>
 );
 
-export default loginScreen;
+function mapStateToProps(state) {
+    return {
+        user: state.user
+    };
+}
+
+function matchDispatchToProps(dispatch) {
+    return bindActionCreators({userLogin: userLogin}, dispatch)
+}
+
+export default connect(mapStateToProps, matchDispatchToProps)(loginScreen);
